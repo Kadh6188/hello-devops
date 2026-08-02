@@ -5,7 +5,13 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Source code will be checked out from GitHub'
+                echo 'Source code checked out successfully'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './mvnw clean package'
             }
         }
 
