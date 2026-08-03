@@ -20,9 +20,24 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t hello-devops:1.0 .'
+                sh 'docker build -t kadh6188/hello-devops:1.0 .'
             }
         }
 
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker push kadh6188/hello-devops:1.0
+                    '''
+                }
+            }
+        }
     }
 }
