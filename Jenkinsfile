@@ -39,5 +39,18 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'microk8s kubectl apply -f deployment.yaml'
+                sh 'microk8s kubectl apply -f service.yaml'
+            }
+        }
+        stage('kubernetes verify') {
+            steps {
+                sh 'microk8s kubectl get pods'
+                sh 'microk8s kubectl get services'
+                sh 'microk8s kubectl get deployments'
+            }
+        }
     }
 }
